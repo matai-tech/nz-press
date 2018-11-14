@@ -1,12 +1,13 @@
 module.exports  = {
   title: 'MatAi Document',
+  lang: 'en-US',
   home: '/zh/introduce',
   locales: {
     // 作为特例，默认语言可以使用 '/' 作为其路径。
     // '/': {
-    //   lang: 'en',
-    //   title: 'MatAi帮助文档',
-    //   description: 'angular 驱动的静态网站生成器',
+    //   lang: 'en-US',
+    //   title: 'MatAi Help',
+    //   description: 'an angular powered site generator',
     //   sidebar: [
     //     {
     //       link: '/introduce',
@@ -14,7 +15,7 @@ module.exports  = {
     //     }
     //   ]
     // },
-    '/zh/': {
+    '/zh': {
       lang: 'zh-CN',
       title: 'MatAi帮助文档',
       description: 'angular 驱动的静态网站生成器',

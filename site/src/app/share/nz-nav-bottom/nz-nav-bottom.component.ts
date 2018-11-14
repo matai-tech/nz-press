@@ -36,7 +36,7 @@ export class NzNavBottomComponent implements OnInit {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         const url = this.router.url;
-        this.language = this.service.findLanguage(url);
+        this.language = this.service.getLangByUrl(url).name;
         const componentsList = menus.reduce((pre, cur) => {
           // TODO: attrType
           return pre.concat((cur as any).children);

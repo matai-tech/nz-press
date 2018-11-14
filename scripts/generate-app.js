@@ -51,7 +51,7 @@ module.exports = function(sourcePath, compilePath) {
    */
   for (let i = 0; i < dir.length; i++) {
     const name = dir[i];
-    if (locales.indexOf(`/${name}/`) >= 0) {
+    if (locales.indexOf(`/${name}`) >= 0) {
       dir.splice(i, 1);
       i--;
       fs.mkdirSync(path.join(compilePath, name));

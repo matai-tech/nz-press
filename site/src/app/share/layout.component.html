@@ -21,7 +21,7 @@
             </ng-template>
           </nz-select> -->
         </div>
-        <nz-select *ngIf="languages.length > 0" class="header-lang-button" style="width: 80px;" [(ngModel)]="language" (ngModelChange)="switchLanguage($event)">
+        <nz-select *ngIf="languages.length > 1" class="header-lang-button" style="width: 120px;" [(ngModel)]="language" (ngModelChange)="switchLanguage($event)">
           <nz-option *ngFor="let l of languages" [nzValue]="l" [nzLabel]="l.text"></nz-option>
         </nz-select>
         <!-- <nz-select nzSize="small" class="version" style="width: 68px;" [ngModel]="currentVersion" (ngModelChange)="navigateToVersion($event)">

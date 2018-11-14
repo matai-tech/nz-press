@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { menus } from '../../assets/menus';
-import config from '../../assets/config';
 import { Router } from '@angular/router';
+import { Language, ConfigService } from './config.service';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-menu',
@@ -9,34 +10,42 @@ import { Router } from '@angular/router';
 })
 export class LayoutComponent implements OnInit {
   list = menus;
-  title = config.title;
+  title;
   isCollapsed = false;
-  languages;
   language;
-  private _langs = [
-    { name: '', text: 'English' },
-    { name: 'zh', text: '中文' },
-  ];
+  languages;
   oldLanguageName;
 
-  constructor(private _router: Router) {
-    const flg = this._router.url.split('/')[1];
-    const configLangs = Object.keys(config.locales) || [];
-    // find languages exist in config.js, replace '//' to '/'
-    this.languages = this._langs.filter(lang => configLangs.includes(`/${lang.name}/`.replace(/\/\//, '/')));
-    // default is English
-    this.language = this.languages.find(l => flg === l.name) || { name: '', text: 'English' };
-    this.oldLanguageName = this.language.name;
+  constructor(
+    private _router: Router,
+    private configSrv: ConfigService,
+    @Inject(DOCUMENT) private doc
+  ) {
+    this.languages = this.configSrv.languages;
+    this.configSrv.languageChange$.subscribe(config => {
+      this.title = config.title;
+      this.doc.documentElement.lang = config.lang;
+      this.doc.title = config.title;
+      this.doc.description = config.description;
+    })
+    this.init();
   }
 
-  switchLanguage(value: { name: string, text: string }) {
-    let url = this._router.url;
+  switchLanguage(value: Language) {
+    let url;
     // old language is not English
     if (this.oldLanguageName !== '') {
       url = this._router.url.split('/').slice(2).join('/');
+    } else {
+      url = this._router.url;
     }
+    this._router.navigateByUrl(`/${value.name}${url}`).then(() => this.init());
+  }
+
+  init() {
+    this.language = this.configSrv.getLangByUrl(this._router.url);
+    this.configSrv.change();
     this.oldLanguageName = this.language.name;
-    this._router.navigateByUrl(`/${value.name}${url}`);
   }
 
   ngOnInit(): void { }
